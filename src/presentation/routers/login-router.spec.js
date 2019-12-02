@@ -205,4 +205,26 @@ describe('Login Router', () => {
     expect(httpResponse.statusCode).toBe(500)
     expect(httpResponse.body).toEqual(new ServerError())
   })
+
+  test('Should return 500 if no EmailValidator throws', async () => {
+    const authUseCaseSpy = makeAuthUseCase()
+
+    class EmailValidatorSpy {
+      async isValid () {
+        throw new Error()
+      }
+    }
+    const emailValidatorSpy = new EmailValidatorSpy()
+    emailValidatorSpy.isValid = true
+
+    const sut = new LoginRouter(authUseCaseSpy, emailValidatorSpy)
+    const httpRequest = {
+      body: {
+        password: 'any_password',
+        email: 'any_email@mail.com'
+      }
+    }
+    const httpResponse = await sut.route(httpRequest)
+    expect(httpResponse.statusCode).toBe(500)
+  })
 })
