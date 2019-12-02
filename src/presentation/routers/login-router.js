@@ -1,6 +1,5 @@
 const HttpResponse = require('../helpers/http-response')
 const MissingParamError = require('../helpers/missing-param-error')
-
 const InvlidParamError = require('../helpers/invalid-param-error')
 
 class LoginRouter {
